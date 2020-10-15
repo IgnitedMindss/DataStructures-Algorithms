@@ -1,0 +1,4 @@
+﻿  DataStructures.c
+H:\Data Structures and algorithms and c programming\DS_A\DS_A\DataStructures.c(8,1): warning C4005: 'NULL': macro redefinition
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\vcruntime.h(235): message : see previous definition of 'NULL'
+  DS_A.vcxproj -> H:\Data Structures and algorithms and c programming\DS_A\x64\Debug\DS_A.exe
