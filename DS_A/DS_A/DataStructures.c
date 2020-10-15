@@ -155,7 +155,101 @@ int pop_front_list(list* l) {
 }
 
 //--------------------------	BACK OF L-LIST	-------------------------------------
+void push_back_list(list* l, int value) {
+	list_node* ln = (list_node*)(malloc(sizeof(list_node)));
+	ln->value = value;
+	ln->next = NULL;
+	list_node* p = l->head;
+	while (p != NULL && p->next != NULL)
+		p = p->next;
+	if (p == NULL)
+		l->head = ln;
+	else
+		p->next = ln;
+	l->size++;
+}
 
+int pop_back_list(list* l) {
+	if (empty_list(l)) {
+		printf("List is empty");
+		return 0;
+	}
+	if (l->head->next == NULL) {
+		int value = l->head->value;
+		free(l->head);
+		l->head = NULL;
+		l->size--;
+		return value;
+	}
+	list_node* ln = l->head;
+	while (ln->next->next != NULL)
+		ln = ln->next;
+	int value = ln->next->value;
+	free(ln->next);
+	ln->next = 0;
+	l->size--;
+	return value;
+}
+//===================================================================================
+
+//==============	DOUBLY LLIST	=================================================
+
+struct doubly_list_node {
+	int value;
+	struct doubly_list_node* next;
+	struct doubly_list_node* previous;
+
+};
+typedef struct doubly_list_node doubly_list_node;
+
+struct doubly_list {
+	doubly_list_node* head;
+	doubly_list_node* tail;
+	int size;
+};
+typedef struct doubly_list doubly_list;
+
+doubly_list* doubly_create_list() {
+	doubly_list* l = (doubly_list*)(malloc(sizeof(doubly_list)));
+	l->head = l->tail = NULL;
+	l->size = 0;
+	return l;
+}
+
+bool empty_list(doubly_list* l) {
+	return l->size == 0;
+}
+
+void doubly_push_front_list(doubly_list* l, int value) {
+	doubly_list_node* ln = (doubly_list_node*)(malloc(sizeof(doubly_list_node)));
+	ln->value = value;
+	ln->next = ln->previous = NULL;
+	if (empty_list(l)) {
+		l->head = l->tail = ln;
+		l->size++;
+		return ;
+	}
+
+	ln->next = l->head;
+	l->head->previous = ln;
+	l->head = ln;
+	l->size++;
+}
+
+void doubly_push_back_list(doubly_list* l, int value) {
+	doubly_list_node* ln = (doubly_list_node*)(malloc(sizeof(doubly_list_node)));
+	ln->value = value;
+	ln->next = ln->previous = NULL;
+	if (empty_list(l)) {
+		l->head = l->tail = ln;
+		l->size++;
+		return;
+	}
+	ln->previous = l->tail;
+	l->tail->next = ln;
+	l->tail = ln;
+	l->size++;
+}
 int main() {
 	//==========	FOR STACK	=====================================================
 	
@@ -183,7 +277,8 @@ int main() {
 	printf("\n");
 	//==========	FOR LLIST	=====================================================
 
-	list* l = create_list();
+	//----------	ACTING AS STACK	-------------------------------------------------
+	/*list* l = create_list();
 	push_front_list(l, 8);
 	push_front_list(l, 1);
 	push_front_list(l, 9);
@@ -191,6 +286,28 @@ int main() {
 	push_front_list(l, 5);
 	while (!empty_list(l)) {
 		printf("%d\t", pop_front_list(l));
+	}*/
+
+	//----------	ACTING AS QUEUE	--------------------------------------------------
+	/*list* l = create_list();
+	push_back_list(l, 8);
+	push_back_list(l, 1);
+	push_back_list(l, 9);
+	push_back_list(l, 4);
+	push_back_list(l, 5);
+	while (!empty_list(l)) {
+		printf("%d\t", pop_front_list(l));
+	}*/
+
+	//----------	ACTING AS STACK	-------------------------------------------------
+	list* l = create_list();
+	push_back_list(l, 8);
+	push_back_list(l, 1);
+	push_back_list(l, 9);
+	push_back_list(l, 4);
+	push_back_list(l, 5);
+	while (!empty_list(l)) {
+		printf("%d\t", pop_back_list(l));
 	}
 	//================================================================================
 	return 0;
