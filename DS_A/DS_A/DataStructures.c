@@ -216,7 +216,7 @@ doubly_list* doubly_create_list() {
 	return l;
 }
 
-bool empty_list(doubly_list* l) {
+bool doubly_empty_list(doubly_list* l) {
 	return l->size == 0;
 }
 
@@ -224,7 +224,7 @@ void doubly_push_front_list(doubly_list* l, int value) {
 	doubly_list_node* ln = (doubly_list_node*)(malloc(sizeof(doubly_list_node)));
 	ln->value = value;
 	ln->next = ln->previous = NULL;
-	if (empty_list(l)) {
+	if (doubly_empty_list(l)) {
 		l->head = l->tail = ln;
 		l->size++;
 		return ;
@@ -240,7 +240,7 @@ void doubly_push_back_list(doubly_list* l, int value) {
 	doubly_list_node* ln = (doubly_list_node*)(malloc(sizeof(doubly_list_node)));
 	ln->value = value;
 	ln->next = ln->previous = NULL;
-	if (empty_list(l)) {
+	if (doubly_empty_list(l)) {
 		l->head = l->tail = ln;
 		l->size++;
 		return;
@@ -250,6 +250,119 @@ void doubly_push_back_list(doubly_list* l, int value) {
 	l->tail = ln;
 	l->size++;
 }
+
+int doubly_pop_front_list(doubly_list* l) {
+	if (doubly_empty_list(l))
+	{
+		printf("The list is empty");
+		return 0;
+	}
+	int value = l->head->value;
+	doubly_list_node* ln = l->head;
+	if (l->size == 1) {
+		l->size--;
+		free(l->head);
+		l->head = l->tail = NULL;
+		return value;
+	}
+	l->head = l->head->next;
+	l->head->previous = NULL;
+	free(ln);
+	l->size--;
+	return value;
+}
+
+int doubly_pop_back_list(doubly_list* l) {
+	if (empty_list(l)) {
+		printf("List is empty");
+		return 0;
+	}
+	int value = l->tail->value;
+	if (l->size == 1) {
+		free(l->tail);
+		l->tail = l->head = NULL;
+		l->size--;
+		return value;
+	}
+	list_node* ln = l->tail;
+	l->tail = l->tail->previous;
+	l->tail->next = NULL;
+	free(ln);
+	l->size--;
+	return value;
+}
+//===================================================================================
+
+//==============	BINARY TREE	=====================================================
+struct tree_node {
+	struct tree_node* left_child;
+	struct tree_node* right_child;
+	int value;
+};
+typedef struct tree_node tree_node;
+
+struct tree {
+	tree_node* root;
+	int size;
+};
+typedef struct tree tree;
+
+tree* create_tree() {
+	tree* t = (tree *)(malloc(sizeof(tree)));
+	t->root = NULL;
+	t->size = 0;
+	return t;
+}
+
+bool empty_tree(tree* t) {
+	return t->size == 0;
+}
+
+void insert_tree(tree* t, int value) {
+	tree_node* tn = (tree_node*)(malloc(sizeof(tree_node)));
+	tn->left_child = tn->right_child = NULL;
+	tn->value = value;
+	if (empty_tree(t)) {
+		t->root = tn;
+		t->size++;
+		return t;
+	}
+	tree_node* root = t->root;
+	while (true) {
+		if (value < root->value) {
+			if (root->left_child == NULL) {
+				root->left_child = tn;
+				t->size++;
+				return;
+			}
+			else {
+				root = root->left_child;
+			}
+		}
+		else if (value > root->value) {
+			if (root->right_child == NULL) {
+				root->right_child = tn;
+				t->size++;
+				return;
+			}
+			else {
+				root = root->right_child;
+			}
+		}
+		else
+			break;
+	}
+}
+
+void print_tree(tree_node* root) {
+	if (root == NULL) {
+		return;
+	}
+	print_tree(root->left_child);
+	printf("%d\t", root->value);
+	print_tree(root->right_child);
+}
+
 int main() {
 	//==========	FOR STACK	=====================================================
 	
@@ -278,37 +391,77 @@ int main() {
 	//==========	FOR LLIST	=====================================================
 
 	//----------	ACTING AS STACK	-------------------------------------------------
-	/*list* l = create_list();
-	push_front_list(l, 8);
-	push_front_list(l, 1);
-	push_front_list(l, 9);
-	push_front_list(l, 4);
-	push_front_list(l, 5);
-	while (!empty_list(l)) {
-		printf("%d\t", pop_front_list(l));
-	}*/
+	list* l1 = create_list();
+	push_front_list(l1, 8);
+	push_front_list(l1, 1);
+	push_front_list(l1, 9);
+	push_front_list(l1, 4);
+	push_front_list(l1, 5);
+	while (!empty_list(l1)) {
+		printf("%d\t", pop_front_list(l1));
+	}
+
+	printf("\n");
 
 	//----------	ACTING AS QUEUE	--------------------------------------------------
-	/*list* l = create_list();
-	push_back_list(l, 8);
-	push_back_list(l, 1);
-	push_back_list(l, 9);
-	push_back_list(l, 4);
-	push_back_list(l, 5);
-	while (!empty_list(l)) {
-		printf("%d\t", pop_front_list(l));
-	}*/
+	list* l2 = create_list();
+	push_back_list(l2, 8);
+	push_back_list(l2, 1);
+	push_back_list(l2, 9);
+	push_back_list(l2, 4);
+	push_back_list(l2, 5);
+	while (!empty_list(l2)) {
+		printf("%d\t", pop_front_list(l2));
+	}
+
+	printf("\n");
 
 	//----------	ACTING AS STACK	-------------------------------------------------
-	list* l = create_list();
-	push_back_list(l, 8);
-	push_back_list(l, 1);
-	push_back_list(l, 9);
-	push_back_list(l, 4);
-	push_back_list(l, 5);
-	while (!empty_list(l)) {
-		printf("%d\t", pop_back_list(l));
+	list* l3 = create_list();
+	push_back_list(l3, 8);
+	push_back_list(l3, 1);
+	push_back_list(l3, 9);
+	push_back_list(l3, 4);
+	push_back_list(l3, 5);
+	while (!empty_list(l3)) {
+		printf("%d\t", pop_back_list(l3));
 	}
 	//================================================================================
+	printf("\n");
+	//================	FOR DOUBLY LLIST	==========================================
+
+	//----------------	ACTING AS STACK		------------------------------------------
+	doubly_list* dl1 = doubly_create_list();
+	doubly_push_front_list(dl1, 8);
+	doubly_push_front_list(dl1, 2);
+	doubly_push_front_list(dl1, 5);
+	doubly_push_front_list(dl1, 3);
+	doubly_push_front_list(dl1, 1);
+	while (!doubly_empty_list(dl1)) {
+		printf("%d\t", doubly_pop_front_list(dl1));
+	}
+
+	printf("\n");
+
+	//-----------------	ACTING AS QUEUE		-------------------------------------------
+	doubly_list* dl = doubly_create_list();
+	doubly_push_front_list(dl, 8);
+	doubly_push_front_list(dl, 2);
+	doubly_push_front_list(dl, 5);
+	doubly_push_front_list(dl, 3);
+	doubly_push_front_list(dl, 1);
+	while (!doubly_empty_list(dl)) {
+		printf("%d\t", doubly_pop_back_list(dl));
+	}
+	//=================================================================================
+	printf("\n");
+	//==================	BINARY TREE		===========================================
+	tree* t = create_tree();
+	insert_tree(t, 3);
+	insert_tree(t, 1);
+	insert_tree(t, 2);
+	insert_tree(t, 5);
+	insert_tree(t, 4);
+	print_tree(t->root);
 	return 0;
 }
