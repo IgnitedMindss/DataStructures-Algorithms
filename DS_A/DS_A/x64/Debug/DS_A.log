@@ -4,4 +4,5 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.2
 H:\Data Structures and algorithms and c programming\DS_A\DS_A\DataStructures.c(276,18): warning C4133: 'function': incompatible types - from 'doubly_list *' to 'list *'
 H:\Data Structures and algorithms and c programming\DS_A\DS_A\DataStructures.c(287,1): warning C4133: 'initializing': incompatible types - from 'doubly_list_node *' to 'list_node *'
 H:\Data Structures and algorithms and c programming\DS_A\DS_A\DataStructures.c(328,11): warning C4098: 'insert_tree': 'void' function returning a value
+H:\Data Structures and algorithms and c programming\DS_A\DS_A\DataStructures.c(389,57): warning C4133: '=': incompatible types - from 'graph **' to 'edge_node **'
   DS_A.vcxproj -> H:\Data Structures and algorithms and c programming\DS_A\x64\Debug\DS_A.exe
